@@ -35,6 +35,7 @@ namespace AirPlay.Listeners
 
         public override async Task OnRawReceivedAsync(TcpClient client, NetworkStream stream, CancellationToken cancellationToken)
         {
+            //Console.WriteLine($"MirroringListener OnRawReceivedAsync");
             // Get session by active-remove header value
             var session = await SessionManager.Current.GetSessionAsync(_sessionId);
 
@@ -106,7 +107,7 @@ namespace AirPlay.Listeners
                                     ret = await stream.ReadAsync(payload, readStart, header.PayloadSize - readStart);
                                     readStart += ret;
                                 } while (readStart < header.PayloadSize);
-
+                                //Console.WriteLine($"header.PayloadType:{header.PayloadType}");
                                 if (header.PayloadType == 0)
                                 {
                                     DecryptVideoData(payload, out byte[] output);
@@ -173,7 +174,7 @@ namespace AirPlay.Listeners
             Array.Copy(videoData, 0, output, 0, videoData.Length);
 
             // Release video data
-            videoData = null;
+            //videoData = null;
         }
 
         private void InitAesCtrCipher(byte[] aesKey, byte[] ecdhShared, string streamConnectionId)
@@ -197,6 +198,14 @@ namespace AirPlay.Listeners
             _aesCtrDecrypt.Init(false, cipherParameters);
         }
 
+        /// <summary>
+        /// 处理收到的视频数据
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <param name="spsPps"></param>
+        /// <param name="pts"></param>
+        /// <param name="widthSource"></param>
+        /// <param name="heightSource"></param>
         private void ProcessVideo(byte[] payload, byte[] spsPps, long pts, int widthSource, int heightSource)
         {
             int nalu_size = 0;
@@ -231,8 +240,6 @@ namespace AirPlay.Listeners
                     h264Data.Data = payloadOut;
                     h264Data.Length = payload.Length + spsPps.Length;
 
-                    // Release payload
-                    payload = null;
                 }
                 else
                 {

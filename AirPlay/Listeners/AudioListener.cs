@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -479,7 +480,7 @@ namespace AirPlay.Listeners
         private void InitializeDecoder (AudioFormat audioFormat)
         {
             if (_decoder != null) return;
-
+            Trace.WriteLine($"audioFormat:{audioFormat}");
             if (audioFormat == AudioFormat.ALAC)
             {
                 // RTP info: 96 AppleLossless, 96 352 0 16 40 10 14 2 255 0 0 44100

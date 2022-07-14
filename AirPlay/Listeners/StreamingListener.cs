@@ -34,7 +34,7 @@ namespace AirPlay.Listeners
         {
             // INFO: We must use the same ED25519 KeyPair created inside AirTunesListener
             // INFO: We must use the same sessionId to retrieve 
-
+            Console.WriteLine("OnDataReceivedAsync2");
             var session = await SessionManager.Current.GetSessionAsync(_sessionId);
 
             if (request.Type == RequestType.GET && "/server-info".Equals(request.Path, StringComparison.OrdinalIgnoreCase))

@@ -43,7 +43,7 @@ namespace AirPlay.Models
         public bool PairCompleted => EcdhShared != null && (PairVerified ?? false);
         public bool FairPlaySetupCompleted => KeyMsg != null && EcdhShared != null && (PairVerified ?? false);
         public bool FairPlayReady => KeyMsg != null && EcdhShared != null && AesKey != null && AesIv != null;
-        public bool MirroringSessionReady => StreamConnectionId != null && MirroringSession.HasValue ? MirroringSession.Value : false;
+        public bool MirroringSessionReady => StreamConnectionId != null && (MirroringSession ?? false);
         public bool AudioSessionReady => AudioFormat != AudioFormat.Unknown;
     }
 }

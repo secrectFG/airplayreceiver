@@ -55,6 +55,7 @@ namespace AirPlay.Listeners
 
         public override async Task OnDataReceivedAsync(Request request, Response response, CancellationToken cancellationToken)
         {
+            Console.WriteLine($"OnDataReceivedAsync1 request.Type:{request.Type}");
             // Get session by active-remote header value
             var sessionId = request.Headers["Active-Remote"];
             var session = await SessionManager.Current.GetSessionAsync(sessionId);
